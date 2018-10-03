@@ -1,0 +1,7 @@
+{
+  "db": {
+    "uri": "mongodb://localhost/ridesshare"
+  },
+  "secret": "Local secret for new users",
+  "port": 3334
+}
