@@ -13,7 +13,7 @@ function connect(callback) {
     });
 }
 
-if (!mongoose.connection) {
+if (mongoose.connection.readyState == 0) {
   connect();
 }
 
