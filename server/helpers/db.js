@@ -18,5 +18,6 @@ if (mongoose.connection.readyState == 0) {
 }
 
 module.exports = {
-    User: require('../users/user.model')
+    User: require('../users/user.model'),
+    Ride: require('../requests/ride.model')
 };
