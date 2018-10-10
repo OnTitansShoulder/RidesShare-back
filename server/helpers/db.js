@@ -1,8 +1,9 @@
 const config = require('../config.json');
 const mongoose = require('mongoose');
+const b_Promise = require('bluebird');
 
 function connect(callback) {
-  mongoose.Promise = global.Promise;
+  mongoose.Promise = b_Promise;
   mongoose
     .connect(config.db.uri)
     .then(function (connection) {

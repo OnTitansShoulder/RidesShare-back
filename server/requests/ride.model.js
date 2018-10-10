@@ -14,10 +14,21 @@ const schema = new Schema({
       address: { type: String, required: true },
       state: { type: String, default: 'FL' },
       zipcode: { type: String, required: true }
-    }
+    },
+    riders: {
+      type: [{
+        type: String, required: true
+      }],
+      default: []
+    },
+    pendingRiders: {
+      type: [{
+        type: String, required: true
+      }],
+      default: []
+    },
     seats: { type: Number, required: true },
-    username: { type: String, required: true },
-    active: { type: Boolean, default: true }
+    username: { type: String, required: true }
 });
 
 schema.set('toJSON', { virtuals: true });
@@ -28,7 +39,7 @@ schema.virtual('fullToAddr').get(function() {
   return [this.to.address, this.to.state, this.to.zipcode].join(' ');
 });
 schema.pre('save', function (next) {
-  this.createdDate = new Date;
+  this.updatedDate = new Date();
   next();
 });
 

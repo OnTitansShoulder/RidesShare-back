@@ -18,10 +18,10 @@ app.use(jwt());
 
 // api routes
 app.use('/api/users', require('../users/users.controller'));
-// app.use('/api/requests', require('../requests/requests.controller'));
+app.use('/api/requests', require('../requests/request.controller'));
 
 // global error handler
-app.use(errorHandler);
+// app.use(errorHandler);
 
 // start server
 module.exports.start = function start() {
