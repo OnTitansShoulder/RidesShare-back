@@ -26,8 +26,8 @@ async function findRides(username) {
 }
 
 async function searchRides(criteria) {
-  var centerFrom = criteria.targetFrom;
-  var centerTo = criteria.targetTo;
+  var centerFrom = criteria.fromLocation;
+  var centerTo = criteria.toLocation;
   var latFromA = centerFrom.lat - criteria.radius;
   var latFromB = centerFrom.lat + criteria.radius;
   var lngFromA = centerFrom.lng - criteria.radius;
@@ -36,10 +36,16 @@ async function searchRides(criteria) {
   var latToB = centerTo.lat + criteria.radius;
   var lngToA = centerTo.lng - criteria.radius;
   var lngToB = centerTo.lng + criteria.radius;
+  var leaveDateFrom = new Date(criteria.leavingDate);
+  var leaveDateTo = new Date(criteria.leavingDate);
+  leaveDateFrom.setDate(leaveDateFrom.getDate() - criteria.altDays);
+  leaveDateTo.setDate(leaveDateTo.getDate() + criteria.altDays);
+  console.log(leaveDateFrom);
+  console.log(leaveDateTo);
   return Ride.find({
     $and: [
-      { "leavingDate": {$gt: new Date(criteria.leaveDateFrom)} },
-      { "leavingDate": {$lt: new Date(criteria.leaveDateTo)} },
+      { "leavingDate": {$gt: leaveDateFrom} },
+      { "leavingDate": {$lt: leaveDateTo} },
       {"fromLocation.lat": {$gt: latFromA}},
       {"fromLocation.lat": {$lt: latFromB}},
       {"fromLocation.lng": {$gt: lngFromA}},
