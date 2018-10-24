@@ -5,16 +5,16 @@ const schema = new Schema({
     createdDate: { type: Date, default: Date.now },
     updatedDate: { type: Date, default: Date.now },
     leavingDate: { type: Date, required: true },
-    from: {
-      address: { type: String, required: true },
-      state: { type: String, default: 'FL' },
-      zipcode: { type: String, required: true }
+    fromLocation: {
+      lat: { type: Number, required: true },
+      lng: { type: Number, required: true }
     },
-    to: {
-      address: { type: String, required: true },
-      state: { type: String, default: 'FL' },
-      zipcode: { type: String, required: true }
+    toLocation: {
+      lat: { type: Number, required: true },
+      lng: { type: Number, required: true }
     },
+    fromAddress: { type: String, required: true },
+    toAddress: { type: String, required: true },
     riders: {
       type: [{
         type: String, required: true
@@ -32,12 +32,6 @@ const schema = new Schema({
 });
 
 schema.set('toJSON', { virtuals: true });
-schema.virtual('fullFromAddr').get(function() {
-  return [this.from.address, this.from.state, this.from.zipcode].join(' ');
-});
-schema.virtual('fullToAddr').get(function() {
-  return [this.to.address, this.to.state, this.to.zipcode].join(' ');
-});
 schema.pre('save', function (next) {
   this.updatedDate = new Date();
   next();

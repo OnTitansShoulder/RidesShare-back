@@ -14,7 +14,10 @@ router.post('/history', rideHistory); // get user's ride history
 module.exports = router;
 
 function searchRide(req, res, next) {
-
+  console.log(req.body.criteria);
+  requestService.searchRides(req.body.criteria)
+    .then((data) => res.json(data))
+    .catch(err => next(err));
 }
 
 function findUserRides(req, res, next) {
@@ -28,6 +31,7 @@ function rideHistory(req, res, next) {
 }
 
 function createRide(req, res, next) {
+  console.log(req.body.rideInfo);
   requestService.createRide(req.body.rideInfo)
     .then(() => res.json("Success!"))
     .catch(err => next(err));
