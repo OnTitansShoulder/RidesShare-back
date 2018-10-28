@@ -11,6 +11,7 @@ router.put('/ridereq', createRideReq); // create one ride request
 router.post('/myrides', findRides); // me as the driver
 router.post('/myridereqs', findRideReqs); // me as the rider
 router.post('/ride', updateRide); // update one ride
+router.post('/ridereq', updateRideReq); // update one ridereq
 
 module.exports = router;
 
@@ -72,6 +73,12 @@ function createRideReq(req, res, next) {
 
 function updateRide(req, res, next) {
   requestService.updateRide(req.body.updates)
+    .then(() => res.json("Success!"))
+    .catch(err => next(err) );
+}
+
+function updateRideReq(req, res, next) {
+  requestService.updateRideReq(req.body.ridereqId, req.body.updates)
     .then(() => res.json("Success!"))
     .catch(err => next(err) );
 }

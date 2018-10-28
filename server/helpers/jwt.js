@@ -6,10 +6,7 @@ module.exports = jwt;
 
 function jwt() {
     const secret = config.secret;
-    console.log(config.secret);
-    return expressJwt({ secret,
-      getToken: isRevoked
-    }).unless({
+    return expressJwt({ secret, isRevoked }).unless({
         path: [
             // public routes that don't require authentication
             '/api/users/authenticate',
@@ -18,8 +15,11 @@ function jwt() {
     });
 }
 
-function isRevoked(req, payload, done) {
-    // const user = await userService.getById(payload.sub);
+async function isRevoked(req, payload, done) {
+    const user = await userService.getById(payload.sub);
     // revoke token if user no longer exists
-    return req.body.token;
+    if (!user) {
+        return done(null, true);
+    }
+    done()
 };

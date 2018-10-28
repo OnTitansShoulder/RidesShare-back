@@ -7,6 +7,7 @@ module.exports = {
   createRide,
   createRideReq,
   updateRide,
+  updateRideReq,
   findRides,
   findRideReqs,
   searchRides
@@ -28,6 +29,10 @@ async function updateRide(rideInfo) {
   Object.assign(ride, rideInfo);
   return ride.save();
 };
+
+async function updateRideReq(id, updates) {
+  return RideReq.findOneAndUpdate({ _id: id }, updates);
+}
 
 async function findRides(username) {
   return RideReq.find({ driver: username });
