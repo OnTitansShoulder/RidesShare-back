@@ -1,17 +1,26 @@
 const config = require('../config.json');
 const db = require('../helpers/db');
 const Ride = db.Ride;
+const RideReq = db.RideReq;
 
 module.exports = {
   createRide,
+  createRideReq,
   updateRide,
   findRides,
+  findRideReqs,
   searchRides
 };
 
 async function createRide(rideInfo) {
   var ride = new Ride(rideInfo);
   return ride.save();
+}
+
+async function createRideReq(reqInfo) {
+  console.log(reqInfo);
+  var rideReq = new RideReq(reqInfo);
+  return rideReq.save();
 }
 
 async function updateRide(rideInfo) {
@@ -21,8 +30,11 @@ async function updateRide(rideInfo) {
 };
 
 async function findRides(username) {
-  // todo ensure username match the user's token
-  return Ride.find({ username: username });
+  return RideReq.find({ driver: username });
+}
+
+async function findRideReqs(username) {
+  return RideReq.find({ rider: username });
 }
 
 async function searchRides(criteria) {
@@ -55,5 +67,5 @@ async function searchRides(criteria) {
       {"toLocation.lng": {$gt: lngToA}},
       {"toLocation.lng": {$lt: lngToB}},
     ]
-  });
+  }).lean();
 }

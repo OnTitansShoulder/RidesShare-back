@@ -8,6 +8,7 @@ module.exports = {
   authenticate,
   getAll,
   getById,
+  getByUN,
   create,
   update,
   delete: _delete
@@ -27,6 +28,10 @@ async function authenticate({ username, password }) {
 
 async function getAll() {
   return await User.find().select('-hash');
+}
+
+async function getByUN(username) {
+  return await User.findOne({username: username}).select('username firstname lastname -_id');
 }
 
 async function getById(id) {
