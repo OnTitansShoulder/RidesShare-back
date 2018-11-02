@@ -10,6 +10,7 @@ module.exports = {
   updateRideReq,
   findRides,
   findRideReqs,
+  findSharedRides,
   searchRides
 };
 
@@ -19,7 +20,6 @@ async function createRide(rideInfo) {
 }
 
 async function createRideReq(reqInfo) {
-  console.log(reqInfo);
   var rideReq = new RideReq(reqInfo);
   return rideReq.save();
 }
@@ -42,6 +42,10 @@ async function findRideReqs(username) {
   return RideReq.find({ rider: username });
 }
 
+async function findSharedRides(username) {
+  return Ride.find({ username: username });
+}
+
 async function searchRides(criteria) {
   var centerFrom = criteria.fromLocation;
   var centerTo = criteria.toLocation;
@@ -57,10 +61,9 @@ async function searchRides(criteria) {
   var leaveDateTo = new Date(criteria.leavingDate);
   leaveDateFrom.setDate(leaveDateFrom.getDate() - criteria.altDays);
   leaveDateTo.setDate(leaveDateTo.getDate() + criteria.altDays);
-  console.log(leaveDateFrom);
-  console.log(leaveDateTo);
   return Ride.find({
     $and: [
+      { "searchable": true },
       { "leavingDate": {$gt: leaveDateFrom} },
       { "leavingDate": {$lt: leaveDateTo} },
       {"fromLocation.lat": {$gt: latFromA}},
@@ -70,7 +73,7 @@ async function searchRides(criteria) {
       {"toLocation.lat": {$gt: latToA}},
       {"toLocation.lat": {$lt: latToB}},
       {"toLocation.lng": {$gt: lngToA}},
-      {"toLocation.lng": {$lt: lngToB}},
+      {"toLocation.lng": {$lt: lngToB}}
     ]
   }).lean();
 }

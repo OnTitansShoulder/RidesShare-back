@@ -10,13 +10,13 @@ router.put('/ride', createRide); // create one ride
 router.put('/ridereq', createRideReq); // create one ride request
 router.post('/myrides', findRides); // me as the driver
 router.post('/myridereqs', findRideReqs); // me as the rider
+router.post('/sharedrides', findSharedRides); // find the driver's shared rides
 router.post('/ride', updateRide); // update one ride
 router.post('/ridereq', updateRideReq); // update one ridereq
 
 module.exports = router;
 
 function searchRide(req, res, next) {
-  console.log(req.body.criteria);
   requestService.searchRides(req.body.criteria)
     .then((data) => next(data))
     .catch(err => res.status(422).send({ message: err }));
@@ -40,26 +40,26 @@ function appendUsers(rides, req, res, next) {
 }
 
 function findRides(req, res, next) {
-  console.log(req.body);
   requestService.findRides(req.body.username)
-    .then((rides) => {
-      console.log(rides);
-      res.json(rides);
-    })
+    .then((rides) => { res.json(rides); })
     .catch(err => next(err));
 }
 
 function findRideReqs(req, res, next) {
   requestService.findRideReqs(req.body.username)
     .then((ridereqs) => {
-      console.log(ridereqs);
       res.json(ridereqs);
     })
     .catch(err => next(err));
 }
 
+function findSharedRides(req, res, next) {
+  requestService.findSharedRides(req.body.username)
+    .then((rides) => { res.json(rides); })
+    .catch(err => next(err));
+}
+
 function createRide(req, res, next) {
-  console.log(req.body.rideInfo);
   requestService.createRide(req.body.rideInfo)
     .then(() => res.json("Success!"))
     .catch(err => next(err));

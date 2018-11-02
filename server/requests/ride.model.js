@@ -15,7 +15,7 @@ const schema = new Schema({
   },
   fromAddress: { type: String, required: true },
   toAddress: { type: String, required: true },
-  seats: { type: Number, required: true },
+  searchable: { type: Boolean, default: true },
   username: { type: String, required: true }
 });
 
