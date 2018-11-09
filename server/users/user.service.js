@@ -11,6 +11,7 @@ module.exports = {
   getByUN,
   create,
   update,
+  updatePW,
   delete: _delete
 };
 
@@ -53,6 +54,13 @@ async function create(userParam) {
 
   // save user
   await user.save();
+}
+
+async function updatePW(id, userParam) {
+  if (id != userParam.id) {
+    throw "Illegal actions!";
+  }
+  return update(id, userParam);
 }
 
 async function update(id, userParam) {

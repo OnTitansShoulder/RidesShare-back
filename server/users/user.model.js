@@ -18,6 +18,7 @@ const schema = new Schema({
   },
   createdDate: { type: Date, default: Date.now },
   updatedDate: { type: Date, default: Date.now },
+  profileImg: { type: String, default: '' },
   hash: { type: String, required: true },
   /* For reset password */
   resetPasswordToken: { type: String },

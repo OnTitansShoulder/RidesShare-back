@@ -9,6 +9,7 @@ router.post('/register', register);
 // router.get('/current', getCurrent);
 // router.get('/:id', getById);
 router.put('/:id', update);
+router.put('/changepw/:id', updatePW);
 // router.delete('/:id', _delete);
 
 module.exports = router;
@@ -47,7 +48,13 @@ function getById(req, res, next) {
 
 function update(req, res, next) {
   userService.update(req.params.id, req.body)
-  .then(() => res.json({}))
+  .then(() => res.json("Success!"))
+  .catch(err => next(err));
+}
+
+function updatePW(req, res, next) {
+  userService.update(req.params.id, req.body)
+  .then(() => res.json("Success!"))
   .catch(err => next(err));
 }
 

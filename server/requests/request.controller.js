@@ -11,20 +11,24 @@ router.put('/ridereq', createRideReq); // create one ride request
 router.post('/myrides', findRides); // me as the driver
 router.post('/myridereqs', findRideReqs); // me as the rider
 router.post('/sharedrides', findSharedRides); // find the driver's shared rides
-router.post('/ride', updateRide); // update one ride
+router.post('/ride', updateRide); // update one ride, or delete it
 router.post('/ridereq', updateRideReq); // update one ridereq
 
 module.exports = router;
 
 function searchRide(req, res, next) {
   requestService.searchRides(req.body.criteria)
-    .then((data) => next(data))
+    .then((data) => {
+      console.log(data);
+      next(data);
+    })
     .catch(err => res.status(422).send({ message: err }));
 }
 
 function appendUsers(rides, req, res, next) {
   var counter = rides.length;
   var result = [];
+  if (rides.length < 1) return res.json(result);
   rides.forEach((ride) => {
     userService.getByUN(ride.username)
       .then((user) => {
@@ -72,9 +76,15 @@ function createRideReq(req, res, next) {
 }
 
 function updateRide(req, res, next) {
-  requestService.updateRide(req.body.updates)
-    .then(() => res.json("Success!"))
-    .catch(err => next(err) );
+  if (req.body.delete_one) {
+    requestService.deleteRide(req.body.rideId)
+      .then(() => res.json("Success!"))
+      .catch(err => next(err) );
+  } else {
+    requestService.updateRide(req.body.rideId, req.body.updates)
+      .then(() => res.json("Success!"))
+      .catch(err => next(err) );
+  }
 }
 
 function updateRideReq(req, res, next) {

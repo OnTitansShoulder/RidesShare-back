@@ -11,7 +11,8 @@ module.exports = {
   findRides,
   findRideReqs,
   findSharedRides,
-  searchRides
+  searchRides,
+  deleteRide
 };
 
 async function createRide(rideInfo) {
@@ -24,10 +25,8 @@ async function createRideReq(reqInfo) {
   return rideReq.save();
 }
 
-async function updateRide(rideInfo) {
-  var ride = await Ride.findOne({ _id: rideInfo.id });
-  Object.assign(ride, rideInfo);
-  return ride.save();
+async function updateRide(id, updates) {
+  return Ride.findOneAndUpdate({ _id: id }, updates);
 };
 
 async function updateRideReq(id, updates) {
@@ -76,4 +75,8 @@ async function searchRides(criteria) {
       {"toLocation.lng": {$lt: lngToB}}
     ]
   }).lean();
+}
+
+async function deleteRide(id) {
+  return Ride.findOneAndDelete({ _id: id });
 }
