@@ -2,24 +2,24 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 const schema = new Schema({
-  username: { type: String, required: true },
-  riders: {
-    type: [{
-      type: String, required: true
-    }],
-    required: true
+  createdDate: { type: Date, default: Date.now },
+  leavingDate: { type: Date, required: true },
+  fromAddress: { type: String, required: true },
+  toAddress: { type: String, required: true },
+  driver: { type: String, required: true },
+  driverName: { type: String, required: true },
+  driverComment: {
+    comment: { type: String, default: '' },
+    star: { type: Number, default: -1 }
   },
-  leavingDate: { type: Date, required: true},
-  from: {
-    address: { type: String, required: true },
-    state: { type: String, default: 'FL' },
-    zipcode: { type: String, required: true }
-  },
-  to: {
-    address: { type: String, required: true },
-    state: { type: String, default: 'FL' },
-    zipcode: { type: String, required: true }
+  rider: { type: String, required: true },
+  riderName: { type: String, required: true },
+  riderComment: {
+    comment: { type: String, default: '' },
+    star: { type: Number, default: -1 }
   }
 });
 
-module.exports = mongoose.model('History', schema);
+schema.set('toJSON', { virtuals: true });
+
+module.exports = mongoose.model('ReqHistory', schema);

@@ -6,6 +6,8 @@ const bodyParser = require('body-parser'); // auto parse request body
 const jwt = require('../helpers/jwt'); // javascrip web token functions
 const errorHandler = require('../helpers/error-handler');
 const dbs = require('../helpers/db');
+const cronjobs = require('../helpers/cronjob');
+
 const config = require('../config.json');
 
 const app = express();
@@ -21,7 +23,7 @@ app.use('/api/users', require('../users/users.controller'));
 app.use('/api/requests', require('../requests/request.controller'));
 
 // global error handler
-// app.use(errorHandler);
+app.use(errorHandler);
 
 // start server
 module.exports.start = function start() {
