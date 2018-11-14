@@ -11,6 +11,8 @@ router.put('/ridereq', createRideReq); // create one ride request
 router.post('/myrides', findRides); // me as the driver
 router.post('/myridereqs', findRideReqs); // me as the rider
 router.post('/sharedrides', findSharedRides); // find the driver's shared rides
+router.post('/myhistory', findReqHistory); // find the person's ride req history
+router.post('/rateride', rateRide); // update the ratings of a ride
 router.post('/ride', updateRide); // update one ride, or delete it
 router.post('/ridereq', updateRideReq); // update one ridereq
 
@@ -63,6 +65,14 @@ function findSharedRides(req, res, next) {
     .catch(err => next(err));
 }
 
+function findReqHistory(req, res, next) {
+  requestService.findReqHistory(req.body.username)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(err => next(err));
+}
+
 function createRide(req, res, next) {
   requestService.createRide(req.body.rideInfo)
     .then(() => res.json("Success!"))
@@ -89,6 +99,12 @@ function updateRide(req, res, next) {
 
 function updateRideReq(req, res, next) {
   requestService.updateRideReq(req.body.ridereqId, req.body.updates)
+    .then(() => res.json("Success!"))
+    .catch(err => next(err) );
+}
+
+function rateRide(req, res, next) {
+  requestService.updateReqHistory(req.body.id, req.body.updates)
     .then(() => res.json("Success!"))
     .catch(err => next(err) );
 }

@@ -1,16 +1,20 @@
+var async = require('async');
 const config = require('../config.json');
 const db = require('../helpers/db');
 const Ride = db.Ride;
 const RideReq = db.RideReq;
+const ReqHistory = db.ReqHistory;
 
 module.exports = {
   createRide,
   createRideReq,
   updateRide,
   updateRideReq,
+  updateReqHistory,
   findRides,
   findRideReqs,
   findSharedRides,
+  findReqHistory,
   searchRides,
   deleteRide
 };
@@ -25,24 +29,54 @@ async function createRideReq(reqInfo) {
   return rideReq.save();
 }
 
-async function updateRide(id, updates) {
+function updateRide(id, updates) {
   return Ride.findOneAndUpdate({ _id: id }, updates);
 };
 
-async function updateRideReq(id, updates) {
+function updateRideReq(id, updates) {
   return RideReq.findOneAndUpdate({ _id: id }, updates);
 }
 
-async function findRides(username) {
+function updateReqHistory(id, updates) {
+  return ReqHistory.findOneAndUpdate({ _id: id }, updates);
+}
+
+function findRides(username) {
   return RideReq.find({ driver: username });
 }
 
-async function findRideReqs(username) {
+function findRideReqs(username) {
   return RideReq.find({ rider: username });
 }
 
-async function findSharedRides(username) {
+function findSharedRides(username) {
   return Ride.find({ username: username });
+}
+
+function findReqHistory(username) {
+  return new Promise(function (resolve, reject) {
+    async.waterfall([
+      function (done) {
+        let result = {
+          asDriver: [],
+          asRider: []
+        };
+        ReqHistory.find({ driver: username })
+          .exec((err, data) => {
+            result.asDriver = data;
+            done(err, result);
+          });
+      },
+      function (result, done) {
+        ReqHistory.find({ rider: username })
+          .exec((err, data) => {
+            if (err) done(err);
+            result.asRider = data;
+            resolve(result);
+          });
+      }
+    ], (err) => reject(err));
+  });
 }
 
 async function searchRides(criteria) {
