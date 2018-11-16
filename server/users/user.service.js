@@ -32,7 +32,8 @@ async function getAll() {
 }
 
 async function getByUN(username) {
-  return await User.findOne({username: username}).select('username firstname lastname -_id');
+  return await User.findOne({username: username})
+    .select('username profileImg firstname lastname -_id').lean();
 }
 
 async function getById(id) {

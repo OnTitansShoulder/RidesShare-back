@@ -55,7 +55,8 @@ var recycleService = new CronJob('0 */15 * * * *', function () {
     function (present, done) {
       RideReq.deleteMany({'leavingDate': { $lt: present }})
         .then((resp) => {
-          console.log(resp.result.n + " past ride requests got cleaned up.");
+          if (resp.result)
+            console.log(resp.result.n + " past ride requests got cleaned up.");
           done(null, present);
         }).catch(err => console.log(err));
     },
@@ -63,7 +64,8 @@ var recycleService = new CronJob('0 */15 * * * *', function () {
       console.log("level four");
       Ride.deleteMany({'leavingDate': { $lt: present }})
         .then((resp) => {
-          console.log(resp.result.n + " past rides got cleaned up.");
+          if (resp.result)
+            console.log(resp.result.n + " past rides got cleaned up.");
           done();
         }).catch(err => console.log(err));
     },
