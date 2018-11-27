@@ -1,5 +1,7 @@
 node_modules/
+server/env/local-dev.js
 dbTestingCommands.txt
 testingAddresses.md
 testingUsers.md
+admin.md
 TODO.md
