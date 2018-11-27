@@ -3,15 +3,15 @@ var _ = require('lodash'),
 
 var initGlobalConfig = function () {
   // Get the default config
-  var defaultConfig = require(path.join(process.cwd(), 'server/env/default'));
+  var defaultConfig = require(path.resolve('server/env/default'));
 
   // Get the hidden local config
-  var localConfig = require(path.join(process.cwd(), 'server/env/local-dev')) || {};
+  var localConfig = require(path.resolve('server/env/local-dev')) || {};
 
   // Merge config files
   var config = _.merge(defaultConfig, localConfig);
-  
+
   return config;
 };
 
-module.exports.config = initGlobalConfig();
+module.exports = initGlobalConfig();

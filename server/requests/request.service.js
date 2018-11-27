@@ -1,5 +1,4 @@
 var async = require('async');
-const config = require('../config.json');
 const db = require('../helpers/db');
 const userService = require('../users/user.service');
 const Ride = db.Ride;

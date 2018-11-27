@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const config = require('../config.js');
 const mongoose = require('mongoose');
 const b_Promise = require('bluebird');
 
@@ -10,7 +10,7 @@ function connect(callback) {
       if (callback) callback(connection.db);
     })
     .catch(function (err) {
-      console.error('Could not connect to MongoDB!');
+      console.error('Could not connect to MongoDB!\n' + err);
     });
 }
 
