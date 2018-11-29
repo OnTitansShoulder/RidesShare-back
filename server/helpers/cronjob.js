@@ -13,12 +13,17 @@ var CronJob = require('cron').CronJob,
  */
 var hitService = new CronJob('0 */25 * * * *', function () {
   let options = {
-    host: 'https://ridesshare.herokuapp.com',
+    host: 'ridesshare.herokuapp.com',
+    port: 443,
     path: '/test'
   };
-  http.get(options, function (res) {
-    console.log('Just hit myself: ' + res.statusCode);
-  });
+  try {
+    http.get(options, function (res) {
+      console.log('Just hit myself: ' + res.statusCode);
+    });
+  } catch (e) {
+    console.log('self-hit failed. ' + e.message);
+  }
 }, null, true, 'America/New_York');
 
 var recycleService = new CronJob('0 */15 * * * *', function () {
